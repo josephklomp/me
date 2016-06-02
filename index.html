@@ -1,1 +1,52 @@
-Hello world. I have to poop.
+<!DOCTYPE html>
+<html>
+  %div.l1
+	- (0...40).each do
+		%div
+
+%div.l2
+	- (0...40).each do
+		%div
+
+%div.l3
+	- (0...40).each do
+		%div
+		
+		$n: 40
+$w: 30px
+$l: #436, #936, #c36
+
+body
+	background: #036
+
+div[class]
+	width: $n * $w
+	height: 90%
+	position: absolute
+	left: 50%
+	transform: translateX(-50%)
+
+div > div
+	border-radius: 0 0 $w / 2 $w / 2
+	width: $w
+	min-height: $w
+	float: left
+	transform: translateY(-100%)
+	animation: drop 2s forwards ease-out
+
+@keyframes drop
+	from
+		transform: translateY(-100%)
+	to
+		transform: translateY(0)
+
+@each $c in $l
+	$i: index($l, $c)
+
+	.l#{$i} div
+		background: $c
+	
+		@for $j from 1 through $n
+			&:nth-child(#{$j})
+				height: random(100 - 20 * ($i - 1)) * 1%
+				animation-delay: random(60 + 20 * ($i - 1)) * .01s
