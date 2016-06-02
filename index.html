@@ -1,31 +1,206 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html>
-<head>
-  <title>My first styled page</title>
-</head>
+.aquarium
+  .fish.animated
+    .segment.segment-1
+      .segment.segment-2
+        .segment.segment-3
+          .segment.segment-4
+            .segment.segment-5
+              .segment.segment-6
+                .segment.segment-7
+                  .segment.segment-8
+                    .segment.segment-9
+                      .segment.segment-10
+                        .segment.segment-11
+                          .segment.segment-12
+                            .segment.segment-13
+                              .segment.segment-14
+                                .segment.segment-15
+                                  .segment.segment-16
+                                    .segment.segment-17
+                                      .segment.segment-18
+                                        .segment.segment-19
+                                          .segment.segment-20
+                                            .segment.segment-21
+                                              .segment.segment-22
+                                                .segment.segment-23
+                                                  .segment.segment-24
+                                                    .segment.segment-25
+                                                      .segment.segment-26
 
-<body>
+//- - var n = 0
+//- .aquarium
+//-   .fish
+//-     while n < 26
+//-       - n++
+//-       .segment(class='segment-' + n)
+// includes modifiers mixin
+// includes colors mixin
+$color-settings: (
+  'colors': (
+    'a': ( 0: #222 ),
+    'b': ( 0: darkorange ),
+    'c': ( 0: gold ),
+  )
+);
+@include define-color-set;
 
-<!-- Site navigation menu -->
-<ul class="navbar">
-  <li><a href="index.html">Home page</a>
-  <li><a href="musings.html">Musings</a>
-  <li><a href="town.html">My town</a>
-  <li><a href="links.html">Links</a>
-</ul>
+$size: 12px;
 
-<!-- Main content -->
-<h1>My first styled page</h1>
+$color-map: (
+  0: color(transparent),
+  1: color(b),
+  2: color(b, 1),
+  3: color(b, 2),
+  4: color(b, 3),
+  5: color(b, 4),
+  6: color(c),
+  7: color(c, 1),
+  8: color(a),
+  9: color(white),
+);
 
-<p>Welcome to my styled page!
+@function buildSegment($color-list) {
+  $shadow: 0 0 0 0 transparent;
+  $x: 0;
+  @each $color in $color-list {
+    $x: $x + 1;
+    $shadow: $shadow, 0 (($size * $x) * -1) 0 0 map-get($color-map, $color);
+  }
+  @return $shadow;
+}
 
-<p>It lacks images, but at least it has style.
-And it has links, even if they don't go
-anywhere&hellip;
+body {
+  background: linear-gradient(20deg, royalblue, deepskyblue, mix(darkturquoise, deepskyblue, 70%));
+  overflow: hidden;
+  perspective: $size * 100;
+  positon: relative;
+  
+  &:after {
+    border-radius: 50%;
+    box-shadow: (
+      0 0 20vh 20vh rgba(black, .2),
+      20vw -5vh 20vh 20vh rgba(black, .2),
+      40vw 3vh 20vh 20vh rgba(black, .2),
+      60vw -2vh 20vh 20vh rgba(black, .2),
+      80vw 5vh 20vh 20vh rgba(black, .2),
+      100vw 0 20vh 20vh rgba(black, .2),
+    );
+    content: '';
+    height: 2px;
+    left: 0%;
+    position: absolute;
+    top: 100%;
+    width: 2px;
+  }
+}
+.fish {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-center;
+  height: $size * 21;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transform-style: preserve-3d;
+  width: $size * 26;
+  
+  &.animated {
+    display: block;
+    margin-left: $size * 26;
+    margin-top: $size * 21;
+    
+    .segment {
+      animation: swim 1.6s ease-in-out infinite alternate;
+      display: inline-block;
+      left: -$size;
+      margin-left: 1px;
+      position: relative;
+      transform: {
+        origin: right;
+        style: preserve-3d;
+      }
+      
+      @for $i from 1 through 7 {
+        &-#{$i} {
+          animation: none;
+        }
+      }
+      
+      @for $i from 8 through 26 {
+        &-#{$i} {
+          animation: {
+            delay: #{$i * .1}s;
+          }
+        }
+      }
+    }
+    
+    @keyframes swim {
+      from {
+        transform: rotateY(-4deg);
+      }
+      to {
+        transform: rotateY(4deg);
+      }
+    }
+  }
+}
 
-<p>There should be more here, but I don't know
-what yet.
+.segment {
+  height: $size;
+  width: $size;
+  
+  $segment-colors: (
+    26: (0 0 0 0 0 0 8 8 8 8 8 8 8),
+    25: (0 0 0 0 0 8 3 3 3 3 3 3 3 8),
+    24: (0 0 0 0 0 0 8 2 1 1 1 2 8),
+    23: (0 0 0 0 0 0 0 8 9 9 9 8),
+    22: (0 0 0 0 0 0 0 8 9 9 9 8),
+    21: (0 0 0 0 0 0 8 1 1 1 2 2 8),
+    20: (0 0 0 0 0 0 8 1 1 2 2 2 3 8),
+    19: (0 0 0 0 0 8 7 1 8 8 8 2 2 3 8),
+    18: (0 0 0 0 0 8 9 8 5 5 8 9 9 9 8),
+    17: (0 0 0 0 8 9 8 5 1 1 2 8 9 9 9 8),
+    16: (0 0 0 0 8 9 8 5 1 2 2 8 9 9 9 8),
+    15: (0 0 0 0 8 7 8 1 1 1 2 8 3 3 9 4 8 8),
+    14: (0 0 0 8 7 7 8 1 1 2 2 8 3 3 3 4 3 5 8),
+    13: (8 8 8 4 7 7 7 1 1 1 2 2 2 3 3 4 3 3 5 8),
+    12: (8 5 1 4 7 7 1 1 1 2 2 2 3 3 3 4 1 1 3 8),
+    11: (8 5 1 4 7 9 9 9 9 9 9 9 2 3 3 4 3 3 5 8),
+    10: (8 5 1 4 9 9 9 9 9 9 9 9 9 9 3 4 1 1 3 8),
+     9: (0 8 8 4 9 9 9 9 9 9 9 9 9 9 9 4 3 5 5 8),
+     8: (0 0 0 8 9 7 1 1 1 2 2 2 9 9 9 4 8 8 8),
+     7: (0 0 0 8 7 7 7 1 1 1 2 2 2 3 9 8),
+     6: (0 0 0 0 8 7 1 1 1 6 6 2 3 3 8),
+     5: (0 0 0 0 8 7 7 1 1 8 8 2 2 8),
+     4: (0 0 0 0 8 7 4 6 6 1 2 2 2 8),
+     3: (0 0 0 0 0 8 4 8 6 1 2 2 8),
+     2: (0 0 0 0 0 8 4 4 6 1 8 8),
+     1: (0 0 0 0 0 0 8 8 8 8),
+  );
+  
+  $i: 0;
+  @each $segment in $segment-colors {
+    $i: $i + 1;
+    &.segment-#{$i} {
+      box-shadow: buildSegment(map-get($segment-colors, $i));
+    }
+  }
+}
 
 
-</body>
-</html>
+body {
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+* {
+  &, &:before, &:after {
+    box-sizing: border-box;
+    &, &:focus, &:active, &:focus:active {
+      outline: none;
+    }
+  }
+}
